@@ -1,28 +1,13 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
-interface ProfileScreenProps {
-  username: string;
-  onLogout: () => void;
-}
+const ProfileScreen: React.FC = () => {
+  const route = useRoute<any>();
+  const { username } = route.params;
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ username, onLogout }) => {
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.logoutBtn} onPress={onLogout}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-
       <View style={styles.content}>
         <View style={styles.leftHeader}>
           <Image

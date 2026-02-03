@@ -1,67 +1,11 @@
-// import React, { useState } from 'react';
-// import { View, Alert } from 'react-native';
-// import LoginScreen from './pages/loginScreen';
-// import SignupScreen from './pages/signupScreen';
-// import HomeScreen from './pages/homepageScreen';
-// const App = () => {
-//   const [hasSignedUp, setHasSignedUp] = useState(false);
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-//   const [user, setUser] = useState<{ email: string; password: string } | null>(null);
-//   const [username, setUsername] = useState('');
-
-//   const handleLogout = () => {
-//     setIsLoggedIn(false);
-//     Alert.alert('Logged Out', 'You have been logged out.');
-//   };
-//   return (
-//     <View style={{ flex: 1 }}>
-
-    
-//       {!hasSignedUp ? (
-//         <SignupScreen
-//           onSignup={(email: string, password: string) => {
-//             setUser({ email, password });
-//             setHasSignedUp(true);
-
-//             Alert.alert(
-//               'Signup Success',
-//               'Please login to continue',
-//               [{ text: 'OK' }]
-//             );
-//           }}
-//         />
-
-//       ) : !isLoggedIn ? (
-//         <LoginScreen
-//           user={user}
-//           onLoginSuccess={(name: string) => {
-//             setUsername(name);
-
-//             Alert.alert(
-//               'Login Success',
-//               `Welcome ${name}`,
-//               [
-//                 {
-//                   text: 'OK',
-//                   onPress: () => {
-//                     setIsLoggedIn(true);
-//                   },
-//                 },
-//               ],
-//               { cancelable: false }
-//             );
-//           }}
-//     
-
-
 import React, { useState } from 'react';
 import { View, Alert ,Button} from 'react-native';
 import LoginScreen from './pages/loginScreen';
 import SignupScreen from './pages/signupScreen';
-import HomeScreen from './pages/homepageScreen';
-import ProfileScreen from './pages/profileScreen';
-import DetailsScreen from './pages/detailsScreen';
+import HomeDrawer from './navigations/homeDrawer';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeTabs from './navigations/homeTab';
+
 type Screen = 'Home' | 'Profile' | 'Details';
 
 const App = () => {
@@ -69,9 +13,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<{ email: string; password: string } | null>(null);
   const [username, setUsername] = useState('');
-  const [detailName, setDetailName] = useState('');
   const [currentScreen, setCurrentScreen] = useState<Screen>('Home');
-
   const handleLogout = () => {
     setIsLoggedIn(false);
     setCurrentScreen('Home');
@@ -103,31 +45,19 @@ const App = () => {
       />
     );
   }
+  if (isLoggedIn) {
+  return (
+    <HomeDrawer
+      username={username}
+      onLogout={handleLogout}
+    />
+  );
+}
 
   return (
-    <View style={{ flex: 1 }}>
-      {currentScreen === 'Home' && <HomeScreen username={username}  onLogout={handleLogout}  onNavigateToDetails={(name) => {
-        setDetailName(name);
-        setCurrentScreen('Details');
-      }}
-       />}
-      {currentScreen === 'Details' && (
-    <DetailsScreen
-      name={detailName}
-      onBack={() => setCurrentScreen('Home')}
-    />
-  )}
-      {currentScreen === 'Profile' && <ProfileScreen username={username} onLogout={handleLogout} />}
-      
-      <View style={{ flexDirection: 'row', height: 60, borderTopWidth: 1 }}>
-        <View style={{ flex: 1 }}>
-          <Button title="Home" onPress={() => setCurrentScreen('Home')} />
-        </View>
-        <View style={{ flex: 1 }}>
-          <Button title="Profile" onPress={() => setCurrentScreen('Profile')} />
-        </View>
-      </View>
-    </View>
+     <NavigationContainer>
+      <HomeTabs username={username} onLogout={handleLogout} />
+    </NavigationContainer>
   );
 };
 

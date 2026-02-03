@@ -16,7 +16,8 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+
+// import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface LoginScreenProps {
   user: { email: string; password: string } | null;
@@ -92,8 +93,8 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   background: { flex: 1 },
   scroll: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 16 },
-  darkBg: { backgroundColor: Colors.darker },
-  lightBg: { backgroundColor: Colors.lighter },
+  darkBg: { backgroundColor: '#222' },
+  lightBg: { backgroundColor: '#f0f0f0' },
   card: {
     alignSelf: 'center',
     width: '100%',
