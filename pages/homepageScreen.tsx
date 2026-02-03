@@ -5,27 +5,20 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  TextInput,
+  TextInput,Button
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 interface HomeScreenProps {
   username: string;
-  onNavigateToDetails: (name: string) => void;
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({
-  username,
-  onNavigateToDetails,
+  username
 }) => {
   const [name, setName] = useState('');
   const navigation = useNavigation<any>();
   return (
     <SafeAreaView style={styles.safe}>
-        {/* <View style={styles.header}>
-          <TouchableOpacity style={styles.logoutBtn} onPress={onLogout}>
-            <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity>
-        </View> */}
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.username}>

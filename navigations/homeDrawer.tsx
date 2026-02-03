@@ -3,12 +3,11 @@ import { Alert } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeTabs from './homeTab';
-
+import HomeScreen from '../pages/homepageScreen';
 const Drawer = createDrawerNavigator();
 
 const HomeDrawer = ({ username, onLogout }: any) => {
   return (
-    <NavigationContainer>
       <Drawer.Navigator>
         <Drawer.Screen name="Home">
           {() => <HomeTabs username={username} onLogout={onLogout} />}
@@ -33,7 +32,7 @@ const HomeDrawer = ({ username, onLogout }: any) => {
         </Drawer.Screen>
 
       </Drawer.Navigator>
-    </NavigationContainer>
+
   );
 };
 

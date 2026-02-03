@@ -10,7 +10,7 @@ const DetailsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hi, this is {name}</Text>
+      <Text style={styles.text}>Hi, this is {name},This is Detail Screen</Text>
       <Button title="Go Back" onPress={() => navigation.goBack()} />
     </View>
   );
