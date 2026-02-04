@@ -16,7 +16,6 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-// import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface SignupScreenProps {
   onSignup: (email: string, password: string) => void;

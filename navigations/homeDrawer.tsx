@@ -9,7 +9,7 @@ const Drawer = createDrawerNavigator();
 const HomeDrawer = ({ username, onLogout }: any) => {
   return (
       <Drawer.Navigator>
-        <Drawer.Screen name="Home">
+        <Drawer.Screen name="HomeTabs">
           {() => <HomeTabs username={username} onLogout={onLogout} />}
         </Drawer.Screen>
 
