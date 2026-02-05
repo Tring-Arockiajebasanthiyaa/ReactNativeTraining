@@ -8,31 +8,23 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-
-interface Post {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts, Post } from '../store/postsSlice';
+import { RootState, AppDispatch } from '../store';
 
 const PostsScreen = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
+  const { posts, loading } = useSelector(
+    (state: RootState) => state.posts
+  );
+
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then(res => res.json())
-      .then(data => {
-        setPosts(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
+    if (posts.length === 0) {
+      dispatch(fetchPosts());
+    }
   }, []);
 
   const renderItem = ({ item }: { item: Post }) => (
@@ -60,26 +52,15 @@ const PostsScreen = () => {
       <FlatList
         data={posts}
         horizontal
-        showsHorizontalScrollIndicator={true}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
       />
 
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        transparent
-        onRequestClose={() => setModalVisible(false)}
-      >
+      <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>
-              {selectedPost?.title}
-            </Text>
-
-            <Text style={styles.modalBody}>
-              {selectedPost?.body}
-            </Text>
+            <Text style={styles.modalTitle}>{selectedPost?.title}</Text>
+            <Text style={styles.modalBody}>{selectedPost?.body}</Text>
 
             <TouchableOpacity
               style={styles.closeBtn}

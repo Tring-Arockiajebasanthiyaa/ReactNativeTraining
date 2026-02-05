@@ -9,7 +9,7 @@
 
   const Stack = createStackNavigator();
   const Tab = createBottomTabNavigator();
-  const HomeStack = ({ username, onLogout }: any) => (
+  const HomeStack = ({ username }: any) => (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home">
           {(props) => (
@@ -34,7 +34,7 @@
       </Stack.Navigator>
   );
 
-  const HomeTabs = ({ username, onLogout }: any) => (
+  const HomeTabs = ({ username }: any) => (
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
@@ -48,7 +48,7 @@
           ),
         }}
       >
-        {() => <HomeStack username={username} onLogout={onLogout} />}
+        {() => <HomeStack username={username} />}
       </Tab.Screen>
 
       <Tab.Screen

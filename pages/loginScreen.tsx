@@ -16,6 +16,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import { Colors } from 'react-native/Libraries/NewAppScreen';
 
@@ -33,14 +34,21 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ user, onLoginSuccess }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handleLogin = () => {
-    if (!user || user.email !== email || user.password !== password) {
-      Alert.alert('Error', 'Invalid credentials');
-      return;
-    }
+  const handleLogin = async () => {
+  if (!user || user.email !== email || user.password !== password) {
+    Alert.alert('Error', 'Invalid credentials');
+    return;
+  }
 
-    onLoginSuccess(email);
-  };
+  try {
+    const userData = { ...user, username: email }; // save username/email for later
+    await AsyncStorage.setItem('user', JSON.stringify(userData));
+  } catch (error) {
+    console.log('Error saving user data:', error);
+  }
+
+  onLoginSuccess(email); // triggers auto login
+};
 
   return (
     <SafeAreaView style={[styles.safe, isDarkMode ? styles.darkBg : styles.lightBg]}>
