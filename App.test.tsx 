@@ -1,0 +1,73 @@
+import React from 'react';
+import { render, act, waitFor } from '@testing-library/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+jest.mock('../navigations/rootNavigator', () => jest.fn(() => null));
+
+jest.mock('@react-navigation/native', () => ({
+  NavigationContainer: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+jest.mock('@react-navigation/stack', () => ({
+  createStackNavigator: () => ({
+    Navigator: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    Screen: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  }),
+}));
+
+jest.mock('react-redux', () => ({
+  Provider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  getItem: jest.fn(),
+}));
+
+import App from '../App';
+import RootNavigator from '../navigations/rootNavigator';
+
+describe('App', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders without crashing when user exists', async () => {
+    const mockUser = { email: 'test@example.com', username: 'testuser', password: '123' };
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(JSON.stringify(mockUser));
+
+    await act(async () => {
+      render(<App />);
+    });
+
+    await waitFor(() => {
+      expect(RootNavigator).toHaveBeenCalledWith(
+        expect.objectContaining({
+          user: mockUser,
+          isLoggedIn: true,
+          username: 'testuser',
+        }),
+        {}
+      );
+    });
+  });
+
+  it('renders without crashing when no user exists', async () => {
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
+
+    await act(async () => {
+      render(<App />);
+    });
+
+    await waitFor(() => {
+      expect(RootNavigator).toHaveBeenCalledWith(
+        expect.objectContaining({
+          user: null,
+          isLoggedIn: false,
+          username: '',
+        }),
+        {}
+      );
+    });
+  });
+});
