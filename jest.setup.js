@@ -80,6 +80,21 @@ jest.mock('react-native-safe-area-context', () => {
 // ================== NOW IMPORT REACT NATIVE PACKAGES ==================
 import 'react-native-gesture-handler/jestSetup';
 
+// Mock AbortController for fetch tests
+global.AbortController = class AbortController {
+  constructor() {
+    this.signal = {
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+      onabort: null,
+    };
+  }
+  abort() {
+    this.signal.dispatchEvent(new Event('abort'));
+  }
+};
+
 
 
 

@@ -1411,8 +1411,8 @@ SPEC CHECKSUMS:
   React-jsinspector: a98428936fb888cc15d857226a26d9ac0a668a0e
   React-logger: 6c1170f7bc315878ef4bd3b918e09130cf632798
   React-Mapbuffer: 41c166b84fc479afc78097cd51404109ec9edf68
-  react-native-safe-area-context: e48706fb09fde89f82e12bfb49b140cfdcb761f7
-  react-native-vector-icons-ionicons: bed9c3e6ec6b7e0f107a933bec34966cc374d222
+  react-native-safe-area-context: 22c5cd53841a9b69060e943c293bba4f19ce3f4f
+  react-native-vector-icons-ionicons: 5a5ca15bb726b2faf065a4e8d7d49abcf046d13f
   React-nativeconfig: 8fd29a35a3e4e8c37682d976667663d834ba6165
   React-NativeModulesApple: 68eb729eaf628ba066bca5308dd4ccacaaacba97
   React-perflogger: 3887a05940ccd34a83457fd153fdeda509b31737
@@ -1433,8 +1433,8 @@ SPEC CHECKSUMS:
   React-runtimescheduler: a36193fd33a0187852d54d402e170510f1300952
   React-utils: eaaed6083fccd050a594baf1d72db5f949a3b9bb
   ReactCommon: 1a93f1ef5c6e33bf14b9563cdb8e7621a893aa37
-  RNCAsyncStorage: 23e56519cc41d3bade3c8d4479f7760cb1c11996
-  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
+  RNCAsyncStorage: c6b2dd06b227ad8c90a74ecb54e05d4d18b6a3e9
+  RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
   RNGestureHandler: d4bbdbacc1c338732d7dc4cf0f2436af9eedab73
   RNReanimated: c076386897b52fb541afa8fffe08ded731d50211
   RNScreens: 0df9081bbc17690268fdeeb62017f48b4a8479f5

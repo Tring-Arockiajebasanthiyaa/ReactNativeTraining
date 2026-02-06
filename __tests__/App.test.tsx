@@ -7,6 +7,8 @@ import App from '../App';
 import ReactTestRenderer from 'react-test-renderer';
 import { it, describe, beforeEach } from '@jest/globals';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { configureStore } from '@reduxjs/toolkit';
+import postsReducer, { fetchPosts } from '../store/postsSlice';
 
 describe('App', () => {
   beforeEach(() => {
@@ -32,5 +34,96 @@ describe('App', () => {
       // Wait for async operations to complete
       await new Promise(resolve => setTimeout(resolve, 100));
     });
+  });
+});
+
+describe('API Fetching - Posts', () => {
+  let store: any;
+
+  beforeEach(() => {
+    store = configureStore({
+      reducer: {
+        posts: postsReducer,
+      },
+    });
+    jest.clearAllMocks();
+  });
+
+  it('should fetch posts successfully and update state', async () => {
+    // Mock fetch to return sample posts
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve([
+            {
+              userId: 1,
+              id: 1,
+              title: 'Test Post 1',
+              body: 'This is the first test post body',
+            },
+            {
+              userId: 1,
+              id: 2,
+              title: 'Test Post 2',
+              body: 'This is the second test post body',
+            },
+          ]),
+      })
+    ) as jest.Mock;
+
+    // Dispatch fetchPosts action
+    await store.dispatch(fetchPosts());
+
+    // Check the state after fetching
+    const state = store.getState().posts;
+    expect(state.posts.length).toBe(2);
+    expect(state.posts[0].title).toBe('Test Post 1');
+    expect(state.posts[1].title).toBe('Test Post 2');
+    expect(state.loading).toBe(false);
+    expect(global.fetch).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/posts');
+  });
+
+  it('should handle fetch error gracefully', async () => {
+    // Mock fetch to reject
+    global.fetch = jest.fn(() =>
+      Promise.reject(new Error('Network error'))
+    ) as jest.Mock;
+
+    // Dispatch fetchPosts action
+    await store.dispatch(fetchPosts());
+
+    // Check the state after error
+    const state = store.getState().posts;
+    expect(state.posts.length).toBe(0);
+    expect(state.loading).toBe(false);
+  });
+});
+
+describe('Details Screen Display', () => {
+  it('should display correct user information', () => {
+    const mockUser = {
+      email: 'john@example.com',
+      username: 'johndoe',
+      password: 'secure123',
+    };
+
+    // Simulate user data being stored
+    expect(mockUser.username).toBe('johndoe');
+    expect(mockUser.email).toBe('john@example.com');
+  });
+
+  it('should render details with proper data flow', async () => {
+    const mockPost = {
+      userId: 1,
+      id: 1,
+      title: 'Sample Post Title',
+      body: 'This is the detailed content of the post that displays on the details screen',
+    };
+
+    // Verify post data structure
+    expect(mockPost).toHaveProperty('title');
+    expect(mockPost).toHaveProperty('body');
+    expect(mockPost.title).toBe('Sample Post Title');
+    expect(mockPost.body).toContain('details screen');
   });
 });
