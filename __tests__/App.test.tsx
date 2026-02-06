@@ -1,7 +1,3 @@
-/**
- * @format
- */
-
 import React from 'react';
 import App from '../App';
 import ReactTestRenderer from 'react-test-renderer';
@@ -21,7 +17,6 @@ describe('App', () => {
 
     await ReactTestRenderer.act(async () => {
       ReactTestRenderer.create(<App />);
-      // Wait for async operations to complete
       await new Promise(resolve => setTimeout(resolve, 100));
     });
   });
@@ -31,7 +26,6 @@ describe('App', () => {
 
     await ReactTestRenderer.act(async () => {
       ReactTestRenderer.create(<App />);
-      // Wait for async operations to complete
       await new Promise(resolve => setTimeout(resolve, 100));
     });
   });
@@ -50,7 +44,6 @@ describe('API Fetching - Posts', () => {
   });
 
   it('should fetch posts successfully and update state', async () => {
-    // Mock fetch to return sample posts
     global.fetch = jest.fn(() =>
       Promise.resolve({
         json: () =>
@@ -71,10 +64,8 @@ describe('API Fetching - Posts', () => {
       })
     ) as jest.Mock;
 
-    // Dispatch fetchPosts action
     await store.dispatch(fetchPosts());
 
-    // Check the state after fetching
     const state = store.getState().posts;
     expect(state.posts.length).toBe(2);
     expect(state.posts[0].title).toBe('Test Post 1');
@@ -84,15 +75,12 @@ describe('API Fetching - Posts', () => {
   });
 
   it('should handle fetch error gracefully', async () => {
-    // Mock fetch to reject
     global.fetch = jest.fn(() =>
       Promise.reject(new Error('Network error'))
     ) as jest.Mock;
 
-    // Dispatch fetchPosts action
     await store.dispatch(fetchPosts());
 
-    // Check the state after error
     const state = store.getState().posts;
     expect(state.posts.length).toBe(0);
     expect(state.loading).toBe(false);
@@ -107,7 +95,6 @@ describe('Details Screen Display', () => {
       password: 'secure123',
     };
 
-    // Simulate user data being stored
     expect(mockUser.username).toBe('johndoe');
     expect(mockUser.email).toBe('john@example.com');
   });
@@ -120,7 +107,6 @@ describe('Details Screen Display', () => {
       body: 'This is the detailed content of the post that displays on the details screen',
     };
 
-    // Verify post data structure
     expect(mockPost).toHaveProperty('title');
     expect(mockPost).toHaveProperty('body');
     expect(mockPost.title).toBe('Sample Post Title');
