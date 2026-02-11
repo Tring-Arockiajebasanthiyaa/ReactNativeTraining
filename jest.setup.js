@@ -42,7 +42,7 @@ jest.mock('react-native', () => ({
 }));
 
 // Mock Redux store
-jest.mock('./store', () => ({
+jest.mock('./src/store', () => ({
   store: {
     getState: jest.fn(() => ({})),
     dispatch: jest.fn(),
@@ -51,7 +51,7 @@ jest.mock('./store', () => ({
 }));
 
 // Mock RootNavigator
-jest.mock('./navigations/rootNavigator', () => jest.fn(() => null));
+jest.mock('./src/navigations/rootNavigator', () => jest.fn(() => null));
 
 // Mock NavigationContainer
 jest.mock('@react-navigation/native', () => ({
