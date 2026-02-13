@@ -1,11 +1,12 @@
 module.exports = {
   preset: 'react-native',
-  setupFiles: ['./jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/'],
+  testMatch: ['<rootDir>/src/**/__tests__/**/*.test.[jt]s?(x)', '<rootDir>/src/**/?(*.)+(spec|test).[jt]s?(x)'],
   transform: {
     '^.+\\.(js|ts|tsx)$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    // whitelist all ESM packages that Jest cannot handle
     'node_modules/(?!react-native|@react-native|react-native-reanimated|@react-navigation|react-redux|@reduxjs/toolkit|immer)',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],

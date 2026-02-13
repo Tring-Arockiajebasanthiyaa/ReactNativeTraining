@@ -9,6 +9,7 @@ import postsReducer, { fetchPosts } from '../store/postsSlice';
 describe('App', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    
   });
 
   it('renders correctly when user exists', async () => {
@@ -111,5 +112,53 @@ describe('Details Screen Display', () => {
     expect(mockPost).toHaveProperty('body');
     expect(mockPost.title).toBe('Sample Post Title');
     expect(mockPost.body).toContain('details screen');
+  });
+});
+
+describe('User Real-Time Login Flow', () => {
+  const validUser = {
+    email: 'ass@gmail.com',
+    password: '123456789',
+    username: 'assuser',
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should successfully login user by storing credentials to AsyncStorage and verify retrieval', async () => {
+    (AsyncStorage.setItem as jest.Mock).mockResolvedValue(undefined);
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify(validUser));
+
+    await AsyncStorage.setItem('user', JSON.stringify(validUser));
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('user', JSON.stringify(validUser));
+
+    const retrievedUserData = await AsyncStorage.getItem('user');
+    const storedUser = retrievedUserData ? JSON.parse(retrievedUserData) : null;
+
+    expect(storedUser).not.toBeNull();
+    expect(storedUser.email).toBe('ass@gmail.com');
+    expect(storedUser.username).toBe('assuser');
+    expect(storedUser.password).toBe('123456789');
+  });
+
+  it('should fail login if credentials do not match stored credentials in AsyncStorage', async () => {
+    const correctStoredUser = validUser;
+    const attemptedCredentials = {
+      email: 'ass@gmail.com',
+      password: 'wrongpassword123',
+    };
+
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify(correctStoredUser));
+
+    const retrievedUserData = await AsyncStorage.getItem('user');
+    const storedUser = retrievedUserData ? JSON.parse(retrievedUserData) : null;
+
+    const isValidLogin = storedUser && 
+                         storedUser.email === attemptedCredentials.email &&
+                         storedUser.password === attemptedCredentials.password;
+
+    expect(isValidLogin).toBe(false);
+    expect(AsyncStorage.getItem).toHaveBeenCalledWith('user');
   });
 });
